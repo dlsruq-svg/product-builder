@@ -13,7 +13,7 @@ const applyTheme = (theme) => {
     root.dataset.theme = theme;
     if (themeToggle) {
         themeToggle.setAttribute("aria-pressed", String(isDark));
-        themeToggle.textContent = isDark ? "Light Mode" : "Dark Mode";
+        themeToggle.textContent = isDark ? "라이트 모드" : "다크 모드";
     }
 };
 
@@ -85,9 +85,9 @@ const formatSetsForCopy = (sets) => {
         .map((set, index) => {
             const main = set.mainNumbers.join(", ");
             if (set.bonus !== null) {
-                return `Set ${index + 1}: ${main} + Bonus ${set.bonus}`;
+                return `세트 ${index + 1}: ${main} + 보너스 ${set.bonus}`;
             }
-            return `Set ${index + 1}: ${main}`;
+            return `세트 ${index + 1}: ${main}`;
         })
         .join("\n");
 };
@@ -108,14 +108,14 @@ if (copyBtn) {
         const text = formatSetsForCopy(lastGeneratedSets);
         try {
             await navigator.clipboard.writeText(text);
-            copyBtn.textContent = "Copied!";
+            copyBtn.textContent = "복사됨!";
             setTimeout(() => {
-                copyBtn.textContent = "Copy Numbers";
+                copyBtn.textContent = "번호 복사";
             }, 1500);
         } catch (error) {
-            copyBtn.textContent = "Copy failed";
+            copyBtn.textContent = "복사 실패";
             setTimeout(() => {
-                copyBtn.textContent = "Copy Numbers";
+                copyBtn.textContent = "번호 복사";
             }, 1500);
         }
     });

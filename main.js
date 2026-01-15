@@ -2,14 +2,17 @@
 const lottoNumbersContainer = document.getElementById("lotto-numbers");
 const generateBtn = document.getElementById("generate-btn");
 const themeToggle = document.getElementById("theme-toggle");
+const root = document.documentElement;
 
 const THEME_KEY = "theme";
 
 const applyTheme = (theme) => {
     const isDark = theme === "dark";
-    document.body.classList.toggle("dark", isDark);
-    themeToggle.setAttribute("aria-pressed", String(isDark));
-    themeToggle.textContent = isDark ? "Dark" : "Light";
+    root.dataset.theme = theme;
+    if (themeToggle) {
+        themeToggle.setAttribute("aria-pressed", String(isDark));
+        themeToggle.textContent = isDark ? "Light Mode" : "Dark Mode";
+    }
 };
 
 const getPreferredTheme = () => {
@@ -22,11 +25,13 @@ const getPreferredTheme = () => {
 
 applyTheme(getPreferredTheme());
 
-themeToggle.addEventListener("click", () => {
-    const nextTheme = document.body.classList.contains("dark") ? "light" : "dark";
-    localStorage.setItem(THEME_KEY, nextTheme);
-    applyTheme(nextTheme);
-});
+if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+        const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
+        localStorage.setItem(THEME_KEY, nextTheme);
+        applyTheme(nextTheme);
+    });
+}
 
 generateBtn.addEventListener("click", () => {
     lottoNumbersContainer.innerHTML = ""; // Clear previous numbers

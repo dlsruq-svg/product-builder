@@ -1,6 +1,6 @@
 
 :root {
-    color-scheme: light dark;
+    color-scheme: light;
     --bg: #f0f0f0;
     --panel: #ffffff;
     --text: #1b1b1b;
@@ -11,7 +11,8 @@
     --shadow: rgba(0, 0, 0, 0.12);
 }
 
-body.dark {
+:root[data-theme="dark"] {
+    color-scheme: dark;
     --bg: #0f1216;
     --panel: #1a2028;
     --text: #f4f6f8;

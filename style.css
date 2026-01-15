@@ -78,10 +78,54 @@ body {
 
 .lotto-numbers {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     gap: 1rem;
     margin: 2rem 0;
     flex-wrap: wrap;
+}
+
+.lotto-set {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    padding: 0.6rem 0.8rem;
+    border-radius: 12px;
+    background-color: rgba(127, 127, 127, 0.08);
+}
+
+.set-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+}
+
+.lotto-set .bonus {
+    background-color: rgba(255, 193, 7, 0.3);
+    color: var(--text);
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+.checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: var(--text);
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.8rem;
 }
 
 .lotto-numbers span {
@@ -107,8 +151,24 @@ body {
     transition: background-color 0.3s, transform 0.2s;
 }
 
+#copy-btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border: 1px solid var(--muted);
+    border-radius: 5px;
+    background-color: transparent;
+    color: var(--text);
+    cursor: pointer;
+    transition: border-color 0.3s, color 0.3s, transform 0.2s;
+}
+
 #generate-btn:hover {
     background-color: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+#copy-btn:hover {
+    border-color: var(--text);
     transform: translateY(-1px);
 }
 

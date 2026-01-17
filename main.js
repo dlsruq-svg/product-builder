@@ -4,6 +4,8 @@ const generateBtn = document.getElementById("generate-btn");
 const themeToggle = document.getElementById("theme-toggle");
 const dessertToggle = document.getElementById("dessert-toggle");
 const copyBtn = document.getElementById("copy-btn");
+const characterWalker = document.getElementById("character-walker");
+const characterImg = document.getElementById("character-img");
 const root = document.documentElement;
 
 const THEME_KEY = "theme";
@@ -149,4 +151,43 @@ if (copyBtn) {
             }, 1500);
         }
     });
+}
+
+const WALK_FRAMES = {
+    right: [
+        "img/Melissa_Att_Dash_R.png",
+        "img/Melissa_Att_Jump1_R.png",
+        "img/Melissa_Att_Crouch_R.png",
+        "img/Melissa_Att_Climb_R.png",
+    ],
+    left: [
+        "img/Melissa_Att_Stand_L.png",
+        "img/Melissa_Att_Dash_L.png",
+        "img/Melissa_Att_Jump1_L.png",
+        "img/Melissa_Att_Crouch_L.png",
+        "img/Melissa_Att_Climb_L.png",
+    ],
+};
+
+if (characterWalker && characterImg) {
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let direction = "right";
+    let frameIndex = 0;
+
+    const advanceFrame = () => {
+        const frames = WALK_FRAMES[direction];
+        characterImg.src = frames[frameIndex % frames.length];
+        frameIndex += 1;
+    };
+
+    advanceFrame();
+
+    if (!prefersReducedMotion) {
+        setInterval(advanceFrame, 220);
+        characterWalker.addEventListener("animationiteration", () => {
+            direction = direction === "right" ? "left" : "right";
+            frameIndex = 0;
+            advanceFrame();
+        });
+    }
 }

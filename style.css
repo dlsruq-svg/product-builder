@@ -201,6 +201,31 @@ body {
     z-index: 0;
 }
 
+.character-walker {
+    position: fixed;
+    left: -15vw;
+    bottom: 32px;
+    z-index: 2;
+    pointer-events: none;
+    animation: stroll 18s linear infinite alternate;
+    filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.2));
+}
+
+.character-walker img {
+    width: clamp(80px, 14vw, 140px);
+    height: auto;
+    image-rendering: auto;
+}
+
+@keyframes stroll {
+    from {
+        transform: translateX(-10vw);
+    }
+    to {
+        transform: translateX(120vw);
+    }
+}
+
 h1 {
     margin: 0.4rem 0 0.2rem;
     font-size: clamp(2rem, 4vw, 2.6rem);
@@ -224,5 +249,15 @@ h1 {
 
     .menu-item {
         font-size: 0.95rem;
+    }
+
+    .character-walker {
+        bottom: 18px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .character-walker {
+        animation: none;
     }
 }

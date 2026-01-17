@@ -147,17 +147,17 @@ body {
     gap: 0.8rem;
 }
 
-.lotto-numbers span {
-    display: flex;
+.menu-item {
+    display: inline-flex;
     justify-content: center;
     align-items: center;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
     background-color: var(--ball);
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-size: 1rem;
+    font-weight: 600;
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+    white-space: nowrap;
 }
 
 #generate-btn {
@@ -222,9 +222,7 @@ h1 {
         gap: 0.6rem;
     }
 
-    .lotto-numbers span {
-        width: 44px;
-        height: 44px;
-        font-size: 1.2rem;
+    .menu-item {
+        font-size: 0.95rem;
     }
 }

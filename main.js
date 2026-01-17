@@ -2,7 +2,7 @@
 const lottoNumbersContainer = document.getElementById("lotto-numbers");
 const generateBtn = document.getElementById("generate-btn");
 const themeToggle = document.getElementById("theme-toggle");
-const bonusToggle = document.getElementById("bonus-toggle");
+const dessertToggle = document.getElementById("dessert-toggle");
 const copyBtn = document.getElementById("copy-btn");
 const root = document.documentElement;
 
@@ -35,22 +35,51 @@ if (themeToggle) {
     });
 }
 
-const generateNumbers = (includeBonus) => {
-    const numbers = new Set();
-    while (numbers.size < 6) {
-        const randomNumber = Math.floor(Math.random() * 45) + 1;
-        numbers.add(randomNumber);
-    }
+const MAIN_MENUS = [
+    "김치볶음밥",
+    "비빔밥",
+    "불고기 덮밥",
+    "치킨마요",
+    "카레라이스",
+    "떡볶이",
+    "제육볶음",
+    "파스타",
+    "샐러드",
+    "쌀국수",
+    "라멘",
+    "샌드위치",
+    "우동",
+    "짜장면",
+    "함박스테이크",
+    "된장찌개",
+    "순두부찌개",
+    "돈가스",
+];
 
-    const mainNumbers = Array.from(numbers).sort((a, b) => a - b);
-    let bonus = null;
-    if (includeBonus) {
-        do {
-            bonus = Math.floor(Math.random() * 45) + 1;
-        } while (numbers.has(bonus));
-    }
+const DESSERT_MENUS = [
+    "아이스크림",
+    "과일컵",
+    "요거트",
+    "마카롱",
+    "찹쌀떡",
+    "티라미수",
+    "푸딩",
+];
 
-    return { mainNumbers, bonus };
+const pickUniqueItems = (source, count) => {
+    const pool = [...source];
+    const picks = [];
+    while (pool.length && picks.length < count) {
+        const index = Math.floor(Math.random() * pool.length);
+        picks.push(pool.splice(index, 1)[0]);
+    }
+    return picks;
+};
+
+const generateMenuSet = (includeDessert) => {
+    const mainMenus = pickUniqueItems(MAIN_MENUS, 3);
+    const dessert = includeDessert ? pickUniqueItems(DESSERT_MENUS, 1)[0] : null;
+    return { mainMenus, dessert };
 };
 
 const renderSets = (sets) => {
@@ -60,19 +89,20 @@ const renderSets = (sets) => {
         wrapper.className = "lotto-set";
         const label = document.createElement("span");
         label.className = "set-label";
-        label.textContent = `Set ${index + 1}`;
+        label.textContent = `세트 ${index + 1}`;
         wrapper.appendChild(label);
 
-        set.mainNumbers.forEach((number) => {
+        set.mainMenus.forEach((menu) => {
             const span = document.createElement("span");
-            span.textContent = number;
+            span.className = "menu-item";
+            span.textContent = menu;
             wrapper.appendChild(span);
         });
 
-        if (set.bonus !== null) {
+        if (set.dessert !== null) {
             const bonusSpan = document.createElement("span");
-            bonusSpan.className = "bonus";
-            bonusSpan.textContent = set.bonus;
+            bonusSpan.className = "menu-item bonus";
+            bonusSpan.textContent = set.dessert;
             wrapper.appendChild(bonusSpan);
         }
 
@@ -83,9 +113,9 @@ const renderSets = (sets) => {
 const formatSetsForCopy = (sets) => {
     return sets
         .map((set, index) => {
-            const main = set.mainNumbers.join(", ");
-            if (set.bonus !== null) {
-                return `세트 ${index + 1}: ${main} + 보너스 ${set.bonus}`;
+            const main = set.mainMenus.join(", ");
+            if (set.dessert !== null) {
+                return `세트 ${index + 1}: ${main} + 디저트 ${set.dessert}`;
             }
             return `세트 ${index + 1}: ${main}`;
         })
@@ -95,8 +125,8 @@ const formatSetsForCopy = (sets) => {
 let lastGeneratedSets = [];
 
 generateBtn.addEventListener("click", () => {
-    const includeBonus = bonusToggle?.checked ?? false;
-    lastGeneratedSets = Array.from({ length: 5 }, () => generateNumbers(includeBonus));
+    const includeDessert = dessertToggle?.checked ?? false;
+    lastGeneratedSets = Array.from({ length: 5 }, () => generateMenuSet(includeDessert));
     renderSets(lastGeneratedSets);
 });
 
@@ -110,12 +140,12 @@ if (copyBtn) {
             await navigator.clipboard.writeText(text);
             copyBtn.textContent = "복사됨!";
             setTimeout(() => {
-                copyBtn.textContent = "번호 복사";
+                copyBtn.textContent = "메뉴 복사";
             }, 1500);
         } catch (error) {
             copyBtn.textContent = "복사 실패";
             setTimeout(() => {
-                copyBtn.textContent = "번호 복사";
+                copyBtn.textContent = "메뉴 복사";
             }, 1500);
         }
     });

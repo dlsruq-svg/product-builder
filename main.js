@@ -153,41 +153,42 @@ if (copyBtn) {
     });
 }
 
-const WALK_FRAMES = {
-    right: [
-        "img/Melissa_Att_Dash_R.png",
-        "img/Melissa_Att_Jump1_R.png",
-        "img/Melissa_Att_Crouch_R.png",
-        "img/Melissa_Att_Climb_R.png",
-    ],
-    left: [
-        "img/Melissa_Att_Stand_L.png",
-        "img/Melissa_Att_Dash_L.png",
-        "img/Melissa_Att_Jump1_L.png",
-        "img/Melissa_Att_Crouch_L.png",
-        "img/Melissa_Att_Climb_L.png",
-    ],
+const WALKERS = [
+    "img/animal-dog.svg",
+    "img/animal-cat.svg",
+    "img/animal-elephant.svg",
+    "img/animal-rabbit.svg",
+];
+
+const pickRandomWalker = (previous) => {
+    if (WALKERS.length <= 1) {
+        return WALKERS[0];
+    }
+    let next = previous;
+    while (next === previous) {
+        next = WALKERS[Math.floor(Math.random() * WALKERS.length)];
+    }
+    return next;
 };
 
 if (characterWalker && characterImg) {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let direction = "right";
-    let frameIndex = 0;
+    let currentWalker = WALKERS[0];
 
-    const advanceFrame = () => {
-        const frames = WALK_FRAMES[direction];
-        characterImg.src = frames[frameIndex % frames.length];
-        frameIndex += 1;
+    const applyWalker = () => {
+        characterImg.src = currentWalker;
+        characterWalker.classList.toggle("is-left", direction === "left");
     };
 
-    advanceFrame();
+    currentWalker = pickRandomWalker(null);
+    applyWalker();
 
     if (!prefersReducedMotion) {
-        setInterval(advanceFrame, 220);
         characterWalker.addEventListener("animationiteration", () => {
             direction = direction === "right" ? "left" : "right";
-            frameIndex = 0;
-            advanceFrame();
+            currentWalker = pickRandomWalker(currentWalker);
+            applyWalker();
         });
     }
 }

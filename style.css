@@ -215,6 +215,12 @@ body {
     width: clamp(80px, 14vw, 140px);
     height: auto;
     image-rendering: auto;
+    animation: bob 0.8s ease-in-out infinite;
+    transform-origin: center;
+}
+
+.character-walker.is-left img {
+    transform: scaleX(-1);
 }
 
 @keyframes stroll {
@@ -223,6 +229,16 @@ body {
     }
     to {
         transform: translateX(120vw);
+    }
+}
+
+@keyframes bob {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-6px);
     }
 }
 
@@ -258,6 +274,10 @@ h1 {
 
 @media (prefers-reduced-motion: reduce) {
     .character-walker {
+        animation: none;
+    }
+
+    .character-walker img {
         animation: none;
     }
 }

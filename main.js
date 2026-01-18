@@ -78,76 +78,67 @@ const pickUniqueItems = (source, count) => {
     return picks;
 };
 
-const generateMenuSet = (includeDessert) => {
-    const mainMenus = pickUniqueItems(MAIN_MENUS, 3);
+const generateMenu = (includeDessert) => {
+    const mainMenu = pickUniqueItems(MAIN_MENUS, 1)[0];
     const dessert = includeDessert ? pickUniqueItems(DESSERT_MENUS, 1)[0] : null;
-    return { mainMenus, dessert };
+    return { mainMenu, dessert };
 };
 
-const renderSets = (sets) => {
+const renderMenu = (menu) => {
     lottoNumbersContainer.innerHTML = "";
-    sets.forEach((set, index) => {
-        const wrapper = document.createElement("div");
-        wrapper.className = "lotto-set";
-        const label = document.createElement("span");
-        label.className = "set-label";
-        label.textContent = `세트 ${index + 1}`;
-        wrapper.appendChild(label);
+    const wrapper = document.createElement("div");
+    wrapper.className = "lotto-set";
+    const label = document.createElement("span");
+    label.className = "set-label";
+    label.textContent = "추천 메뉴";
+    wrapper.appendChild(label);
 
-        set.mainMenus.forEach((menu) => {
-            const span = document.createElement("span");
-            span.className = "menu-item";
-            span.textContent = menu;
-            wrapper.appendChild(span);
-        });
+    const mainSpan = document.createElement("span");
+    mainSpan.className = "menu-item";
+    mainSpan.textContent = menu.mainMenu;
+    wrapper.appendChild(mainSpan);
 
-        if (set.dessert !== null) {
-            const bonusSpan = document.createElement("span");
-            bonusSpan.className = "menu-item bonus";
-            bonusSpan.textContent = set.dessert;
-            wrapper.appendChild(bonusSpan);
-        }
+    if (menu.dessert !== null) {
+        const bonusSpan = document.createElement("span");
+        bonusSpan.className = "menu-item bonus";
+        bonusSpan.textContent = menu.dessert;
+        wrapper.appendChild(bonusSpan);
+    }
 
-        lottoNumbersContainer.appendChild(wrapper);
-    });
+    lottoNumbersContainer.appendChild(wrapper);
 };
 
-const formatSetsForCopy = (sets) => {
-    return sets
-        .map((set, index) => {
-            const main = set.mainMenus.join(", ");
-            if (set.dessert !== null) {
-                return `세트 ${index + 1}: ${main} + 디저트 ${set.dessert}`;
-            }
-            return `세트 ${index + 1}: ${main}`;
-        })
-        .join("\n");
+const formatMenuForCopy = (menu) => {
+    if (menu.dessert !== null) {
+        return `추천 메뉴: ${menu.mainMenu} + 디저트 ${menu.dessert}`;
+    }
+    return `추천 메뉴: ${menu.mainMenu}`;
 };
 
-let lastGeneratedSets = [];
+let lastGeneratedMenu = null;
 
 generateBtn.addEventListener("click", () => {
     const includeDessert = dessertToggle?.checked ?? false;
-    lastGeneratedSets = Array.from({ length: 5 }, () => generateMenuSet(includeDessert));
-    renderSets(lastGeneratedSets);
+    lastGeneratedMenu = generateMenu(includeDessert);
+    renderMenu(lastGeneratedMenu);
 });
 
 if (copyBtn) {
     copyBtn.addEventListener("click", async () => {
-        if (!lastGeneratedSets.length) {
+        if (!lastGeneratedMenu) {
             return;
         }
-        const text = formatSetsForCopy(lastGeneratedSets);
+        const text = formatMenuForCopy(lastGeneratedMenu);
         try {
             await navigator.clipboard.writeText(text);
             copyBtn.textContent = "복사됨!";
             setTimeout(() => {
-                copyBtn.textContent = "메뉴 복사";
+                copyBtn.textContent = "추천 복사";
             }, 1500);
         } catch (error) {
             copyBtn.textContent = "복사 실패";
             setTimeout(() => {
-                copyBtn.textContent = "메뉴 복사";
+                copyBtn.textContent = "추천 복사";
             }, 1500);
         }
     });
@@ -191,4 +182,76 @@ if (characterWalker && characterImg) {
             applyWalker();
         });
     }
+}
+
+const commentForm = document.getElementById("comment-form");
+const commentList = document.getElementById("comment-list");
+const COMMENTS_KEY = "menu-comments";
+
+const loadComments = () => {
+    try {
+        const stored = localStorage.getItem(COMMENTS_KEY);
+        return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+        return [];
+    }
+};
+
+const saveComments = (comments) => {
+    localStorage.setItem(COMMENTS_KEY, JSON.stringify(comments));
+};
+
+const renderComments = (comments) => {
+    if (!commentList) {
+        return;
+    }
+    commentList.innerHTML = "";
+    if (!comments.length) {
+        const empty = document.createElement("p");
+        empty.className = "comment-meta";
+        empty.textContent = "첫 댓글을 남겨주세요.";
+        commentList.appendChild(empty);
+        return;
+    }
+
+    comments.forEach((comment) => {
+        const card = document.createElement("div");
+        card.className = "comment-card";
+
+        const meta = document.createElement("div");
+        meta.className = "comment-meta";
+        meta.textContent = `${comment.author} · ${comment.date}`;
+
+        const text = document.createElement("p");
+        text.className = "comment-text";
+        text.textContent = comment.message;
+
+        card.appendChild(meta);
+        card.appendChild(text);
+        commentList.appendChild(card);
+    });
+};
+
+const comments = loadComments();
+renderComments(comments);
+
+if (commentForm) {
+    commentForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const formData = new FormData(commentForm);
+        const author = formData.get("author")?.toString().trim() || "익명";
+        const message = formData.get("message")?.toString().trim();
+        if (!message) {
+            return;
+        }
+        const newComment = {
+            author,
+            message,
+            date: new Date().toLocaleDateString("ko-KR"),
+        };
+        comments.unshift(newComment);
+        saveComments(comments);
+        renderComments(comments);
+        commentForm.reset();
+    });
 }

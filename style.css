@@ -147,6 +147,97 @@ body {
     gap: 0.8rem;
 }
 
+.comments {
+    margin-top: 2rem;
+    padding: 1.6rem 1.2rem;
+    border-radius: 18px;
+    background: linear-gradient(140deg, rgba(255, 255, 255, 0.8), transparent 75%);
+    border: 1px solid rgba(127, 127, 127, 0.15);
+    text-align: left;
+}
+
+:root[data-theme="dark"] .comments {
+    background: linear-gradient(140deg, rgba(20, 24, 30, 0.9), transparent 75%);
+}
+
+.comments-header {
+    margin-bottom: 1rem;
+}
+
+.comments-eyebrow {
+    margin: 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.comments h2 {
+    margin: 0.4rem 0;
+    font-size: 1.4rem;
+}
+
+.comments-copy {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.comments-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.comments-submit {
+    padding: 0.7rem 1rem;
+    border: none;
+    border-radius: 999px;
+    background-color: var(--accent);
+    color: white;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 10px 18px var(--ring);
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.comments-submit:hover {
+    transform: translateY(-1px);
+    background-color: var(--accent-hover);
+}
+
+.comments-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.comment-card {
+    padding: 0.8rem 1rem;
+    border-radius: 14px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(127, 127, 127, 0.15);
+}
+
+:root[data-theme="dark"] .comment-card {
+    background-color: rgba(18, 22, 28, 0.9);
+}
+
+.comment-meta {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+}
+
+.comment-text {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--text);
+    white-space: pre-wrap;
+}
+
 .partner {
     margin-top: 2rem;
     padding-top: 1.6rem;

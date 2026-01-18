@@ -16,8 +16,8 @@
                 Dark Mode
             </button>
         </div>
-        <h1>식사 추천 메뉴</h1>
-        <p class="subtitle">한 번에 5세트를 추천하고 바로 복사하세요.</p>
+        <h1>오늘의 메뉴 추천</h1>
+        <p class="subtitle">한 가지 메뉴를 골라드려요. 마음에 들면 댓글로 알려주세요.</p>
         <div class="controls">
             <label class="checkbox">
                 <input type="checkbox" id="dessert-toggle">
@@ -26,8 +26,32 @@
         </div>
         <div class="lotto-numbers" id="lotto-numbers"></div>
         <div class="actions">
-            <button id="generate-btn">5세트 추천</button>
-            <button id="copy-btn" type="button">메뉴 복사</button>
+            <button id="generate-btn">메뉴 추천</button>
+            <button id="copy-btn" type="button">추천 복사</button>
+        </div>
+        <div class="comments">
+            <div class="comments-header">
+                <p class="comments-eyebrow">Comments</p>
+                <h2>댓글 남기기</h2>
+                <p class="comments-copy">추천이 마음에 들었는지 간단히 알려주세요.</p>
+            </div>
+            <form class="comments-form" id="comment-form">
+                <label class="field">
+                    <span>이름 (선택)</span>
+                    <input type="text" name="author" placeholder="홍길동">
+                </label>
+                <label class="field field-wide">
+                    <span>댓글</span>
+                    <textarea
+                        name="message"
+                        rows="3"
+                        placeholder="추천 받은 메뉴 후기를 적어주세요."
+                        required
+                    ></textarea>
+                </label>
+                <button class="comments-submit" type="submit">댓글 등록</button>
+            </form>
+            <div class="comments-list" id="comment-list" aria-live="polite"></div>
         </div>
         <div class="partner">
             <div class="partner-header">

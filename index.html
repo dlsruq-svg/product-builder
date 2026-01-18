@@ -29,6 +29,47 @@
             <button id="generate-btn">5세트 추천</button>
             <button id="copy-btn" type="button">메뉴 복사</button>
         </div>
+        <div class="partner">
+            <div class="partner-header">
+                <p class="partner-eyebrow">Partnership</p>
+                <h2>제휴 문의</h2>
+                <p class="partner-copy">
+                    간단한 정보만 남겨주시면 빠르게 연락드릴게요.
+                </p>
+            </div>
+            <form
+                class="partner-form"
+                action="https://formspree.io/f/mgooaroj"
+                method="POST"
+            >
+                <label class="field">
+                    <span>담당자 이름</span>
+                    <input type="text" name="name" placeholder="홍길동" required>
+                </label>
+                <label class="field">
+                    <span>회사/브랜드</span>
+                    <input type="text" name="company" placeholder="브랜드명" required>
+                </label>
+                <label class="field">
+                    <span>이메일</span>
+                    <input type="email" name="email" placeholder="hello@brand.com" required>
+                </label>
+                <label class="field">
+                    <span>연락처</span>
+                    <input type="tel" name="phone" placeholder="010-1234-5678">
+                </label>
+                <label class="field field-wide">
+                    <span>제휴 내용</span>
+                    <textarea
+                        name="message"
+                        rows="4"
+                        placeholder="협업 목적, 일정, 예산 등을 알려주세요."
+                        required
+                    ></textarea>
+                </label>
+                <button class="partner-submit" type="submit">제휴 제안 보내기</button>
+            </form>
+        </div>
     </div>
     <div class="character-walker" id="character-walker" aria-hidden="true">
         <img
